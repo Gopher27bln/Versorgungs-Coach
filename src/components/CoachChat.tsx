@@ -16,19 +16,34 @@ function getCurrentTime(): string {
   return new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
 }
 
-function getCoachResponse(userMessage: string): string {
-  const lowerMessage = userMessage.toLowerCase();
-  
-  if (lowerMessage.includes('nächstes tun') || lowerMessage.includes('to-do') || lowerMessage.includes('todo') || lowerMessage.includes('schritte')) {
-    return coachResponses.todoResponse;
+async function fetchClaudeResponse(
+  message: string,
+  documentContext: { title: string; date: string; content: string },
+  conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }>
+): Promise<string> {
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message,
+        documentContext,
+        conversationHistory,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('API request failed');
+    }
+
+    const data = await response.json();
+    return data.response || data.fallback;
+  } catch (error) {
+    console.error('Error fetching Claude response:', error);
+    return 'Es tut mir leid, ich kann gerade nicht antworten. Bitte versuchen Sie es später erneut.';
   }
-  
-  if (lowerMessage.includes('zusammenfass') || lowerMessage.includes('wichtig') || lowerMessage.includes('überblick')) {
-    return coachResponses.summaryResponse;
-  }
-  
-  const randomIndex = Math.floor(Math.random() * coachResponses.genericResponses.length);
-  return coachResponses.genericResponses[randomIndex];
 }
 
 export function CoachChat({ document }: CoachChatProps) {
@@ -57,13 +72,14 @@ export function CoachChat({ document }: CoachChatProps) {
     setMessages([greetingMessage]);
   }, [document]);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
 
+    const userMessageText = inputValue.trim();
     const userMessage: ChatMessage = {
       id: generateId(),
       sender: 'user',
-      text: inputValue.trim(),
+      text: userMessageText,
       timestamp: getCurrentTime(),
     };
 
@@ -72,20 +88,38 @@ export function CoachChat({ document }: CoachChatProps) {
     setIsTyping(true);
 
     const currentSender = isEscalated ? 'advisor' : 'coach';
-    const responseText = isEscalated 
-      ? 'Ich verstehe Ihr Anliegen. Lassen Sie mich das für Sie prüfen. Haben Sie noch weitere Fragen zu Ihrem Dokument oder Ihrer Versorgung?'
-      : getCoachResponse(inputValue);
+    
+    let responseText: string;
+    
+    if (isEscalated) {
+      responseText = 'Ich verstehe Ihr Anliegen. Lassen Sie mich das für Sie prüfen. Haben Sie noch weitere Fragen zu Ihrem Dokument oder Ihrer Versorgung?';
+    } else {
+      const conversationHistory = messages
+        .filter(m => m.sender !== 'advisor')
+        .map(m => ({
+          role: (m.sender === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
+          content: m.text,
+        }));
 
-    setTimeout(() => {
-      const responseMessage: ChatMessage = {
-        id: generateId(),
-        sender: currentSender,
-        text: responseText,
-        timestamp: getCurrentTime(),
-      };
-      setMessages((prev) => [...prev, responseMessage]);
-      setIsTyping(false);
-    }, 1500);
+      responseText = await fetchClaudeResponse(
+        userMessageText,
+        {
+          title: document.title,
+          date: document.date,
+          content: document.content,
+        },
+        conversationHistory
+      );
+    }
+
+    const responseMessage: ChatMessage = {
+      id: generateId(),
+      sender: currentSender,
+      text: responseText,
+      timestamp: getCurrentTime(),
+    };
+    setMessages((prev) => [...prev, responseMessage]);
+    setIsTyping(false);
   };
 
   const handleEscalate = () => {
