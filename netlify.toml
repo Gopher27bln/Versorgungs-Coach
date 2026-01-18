@@ -6,8 +6,8 @@
 [functions]
   node_bundler = "esbuild"
 
-[secrets-scanning]
-  enabled = false
+[build.environment]
+  SECRETS_SCAN_ENABLED = "false"
 
 [[redirects]]
   from = "/api/*"
