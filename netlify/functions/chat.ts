@@ -1,10 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { Handler } from '@netlify/functions';
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
-
 const SYSTEM_PROMPT = `Du bist der "Versorgungs-Coach", ein freundlicher und kompetenter KI-Assistent in der elektronischen Patientenakte (ePA) einer deutschen Krankenkasse.
 
 Deine Aufgaben:
@@ -43,7 +39,24 @@ const handler: Handler = async (event) => {
     };
   }
 
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  
+  if (!apiKey) {
+    console.error('ANTHROPIC_API_KEY is not set');
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ 
+        error: 'API key not configured',
+        fallback: 'Der Service ist momentan nicht verfügbar. Bitte versuchen Sie es später erneut.'
+      }),
+    };
+  }
+
   try {
+    const anthropic = new Anthropic({
+      apiKey: apiKey,
+    });
+
     const { message, documentContext, conversationHistory = [] }: ChatRequest = JSON.parse(event.body || '{}');
 
     if (!message) {
@@ -92,11 +105,13 @@ Beziehe dich in deinen Antworten auf dieses Dokument, wenn es relevant ist.`;
     };
   } catch (error) {
     console.error('Error calling Claude API:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     
     return {
       statusCode: 500,
       body: JSON.stringify({ 
         error: 'Failed to get response from AI',
+        details: errorMessage,
         fallback: 'Es tut mir leid, ich kann gerade nicht antworten. Bitte versuchen Sie es später erneut oder wenden Sie sich an einen Kundenberater.'
       }),
     };
