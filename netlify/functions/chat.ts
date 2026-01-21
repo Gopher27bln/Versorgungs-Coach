@@ -1,7 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { Handler } from '@netlify/functions';
 
-const SYSTEM_PROMPT = `Du bist der "Versorgungs-Coach", ein freundlicher und kompetenter KI-Assistent in der elektronischen Patientenakte (ePA) einer deutschen Krankenkasse.
+const COACH_SYSTEM_PROMPT = `Du bist der "Versorgungs-Coach", ein freundlicher und kompetenter KI-Assistent in der elektronischen Patientenakte (ePA) einer deutschen Krankenkasse.
 
 Deine Aufgaben:
 1. Erkläre medizinische Dokumente in einfacher, verständlicher Sprache
@@ -18,8 +18,27 @@ Wichtige Regeln:
 - Antworte auf Deutsch
 - Halte Antworten prägnant aber hilfreich (max. 200 Wörter)`;
 
+const ADVISOR_SYSTEM_PROMPT = `Du bist ein BARMER Kundenberater namens "Thomas Schneider". Du bist ein echter Mensch (simuliert), kein KI-Assistent. Der Nutzer wurde vom KI-Coach an dich weitergeleitet, weil er persönliche Beratung benötigt.
+
+Deine Rolle:
+1. Du bist ein erfahrener, empathischer Kundenberater der BARMER
+2. Du kannst auf individuelle Anliegen eingehen und persönliche Beratung geben
+3. Du hast Zugriff auf die Versicherungsdaten und Dokumente des Nutzers
+4. Du kannst konkrete Schritte einleiten (Anträge, Terminvereinbarungen, etc.)
+
+Wichtige Regeln:
+- Sprich den Nutzer mit "Sie" an
+- Sei persönlich, warmherzig und professionell
+- Zeige echtes Interesse am Anliegen des Nutzers
+- Du kannst konkretere Aussagen machen als der KI-Coach
+- Biete proaktiv Hilfe an (z.B. "Soll ich für Sie einen Termin vereinbaren?")
+- Erwähne gelegentlich, dass du Dinge "für den Nutzer prüfen" oder "nachschauen" kannst
+- Antworte auf Deutsch
+- Halte Antworten persönlich und hilfreich (max. 250 Wörter)`;
+
 interface ChatRequest {
   message: string;
+  mode?: 'coach' | 'advisor';
   documentContext?: {
     title: string;
     date: string;
@@ -62,7 +81,7 @@ const handler: Handler = async (event) => {
       apiKey: apiKey,
     });
 
-    const { message, documentContext, conversationHistory = [] }: ChatRequest = JSON.parse(event.body || '{}');
+    const { message, mode = 'coach', documentContext, conversationHistory = [] }: ChatRequest = JSON.parse(event.body || '{}');
 
     if (!message) {
       return {
@@ -71,7 +90,7 @@ const handler: Handler = async (event) => {
       };
     }
 
-    let systemPrompt = SYSTEM_PROMPT;
+    let systemPrompt = mode === 'advisor' ? ADVISOR_SYSTEM_PROMPT : COACH_SYSTEM_PROMPT;
     
     if (documentContext) {
       systemPrompt += `\n\nDer Nutzer schaut sich gerade folgendes Dokument an:

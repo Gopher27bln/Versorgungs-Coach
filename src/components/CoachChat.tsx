@@ -19,7 +19,8 @@ function getCurrentTime(): string {
 async function fetchClaudeResponse(
   message: string,
   documentContext: { title: string; date: string; content: string } | undefined,
-  conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }>
+  conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }>,
+  mode: 'coach' | 'advisor' = 'coach'
 ): Promise<string> {
   try {
     const response = await fetch('/api/chat', {
@@ -29,6 +30,7 @@ async function fetchClaudeResponse(
       },
       body: JSON.stringify({
         message,
+        mode,
         documentContext,
         conversationHistory,
       }),
@@ -90,29 +92,25 @@ export function CoachChat({ document }: CoachChatProps) {
     setIsTyping(true);
 
     const currentSender = isEscalated ? 'advisor' : 'coach';
+    const currentMode = isEscalated ? 'advisor' : 'coach';
     
-    let responseText: string;
-    
-    if (isEscalated) {
-      responseText = 'Ich verstehe Ihr Anliegen. Lassen Sie mich das für Sie prüfen. Haben Sie noch weitere Fragen zu Ihrem Dokument oder Ihrer Versorgung?';
-    } else {
-      const conversationHistory = messages
-        .filter(m => m.sender !== 'advisor')
-        .map(m => ({
-          role: (m.sender === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
-          content: m.text,
-        }));
+    const conversationHistory = messages
+      .filter(m => m.sender !== 'advisor' || isEscalated)
+      .map(m => ({
+        role: (m.sender === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
+        content: m.text,
+      }));
 
-      responseText = await fetchClaudeResponse(
-        userMessageText,
-        document ? {
-          title: document.title,
-          date: document.date,
-          content: document.content,
-        } : undefined,
-        conversationHistory
-      );
-    }
+    const responseText = await fetchClaudeResponse(
+      userMessageText,
+      document ? {
+        title: document.title,
+        date: document.date,
+        content: document.content,
+      } : undefined,
+      conversationHistory,
+      currentMode
+    );
 
     const responseMessage: ChatMessage = {
       id: generateId(),
