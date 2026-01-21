@@ -41,6 +41,11 @@ const handler: Handler = async (event) => {
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   
+  // Debug: Log key info (not the actual key)
+  console.log('API Key exists:', !!apiKey);
+  console.log('API Key length:', apiKey?.length || 0);
+  console.log('API Key starts with:', apiKey?.substring(0, 12) || 'N/A');
+  
   if (!apiKey) {
     console.error('ANTHROPIC_API_KEY is not set');
     return {
