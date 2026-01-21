@@ -4,7 +4,7 @@ import { coachResponses } from '../data/mockData';
 import { MessageBubble } from './MessageBubble';
 
 interface CoachChatProps {
-  document: Document;
+  document?: Document;
   onClose?: () => void;
 }
 
@@ -18,7 +18,7 @@ function getCurrentTime(): string {
 
 async function fetchClaudeResponse(
   message: string,
-  documentContext: { title: string; date: string; content: string },
+  documentContext: { title: string; date: string; content: string } | undefined,
   conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }>
 ): Promise<string> {
   try {
@@ -66,7 +66,9 @@ export function CoachChat({ document }: CoachChatProps) {
     const greetingMessage: ChatMessage = {
       id: generateId(),
       sender: 'coach',
-      text: coachResponses.greeting(document.title, document.date),
+      text: document 
+        ? coachResponses.greeting(document.title, document.date)
+        : 'Hallo! Ich bin Ihr Versorgungs-Coach. Wie kann ich Ihnen heute helfen? Sie können mir Fragen zu Ihrer Gesundheit, Ihren Dokumenten oder Ihrer Versorgung stellen.',
       timestamp: getCurrentTime(),
     };
     setMessages([greetingMessage]);
@@ -103,11 +105,11 @@ export function CoachChat({ document }: CoachChatProps) {
 
       responseText = await fetchClaudeResponse(
         userMessageText,
-        {
+        document ? {
           title: document.title,
           date: document.date,
           content: document.content,
-        },
+        } : undefined,
         conversationHistory
       );
     }

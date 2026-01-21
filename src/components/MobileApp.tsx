@@ -107,7 +107,8 @@ export function MobileApp() {
           <div className="h-full overflow-y-auto">
             <MobileDocumentList 
               documents={mockDocuments} 
-              onSelectDocument={handleSelectDocument} 
+              onSelectDocument={handleSelectDocument}
+              onOpenCoach={handleOpenChat}
             />
           </div>
         )}
@@ -119,10 +120,10 @@ export function MobileApp() {
             />
           </div>
         )}
-        {currentView === 'chat' && selectedDocument && (
+        {currentView === 'chat' && (
           <div className="h-full">
             <CoachChat 
-              document={selectedDocument} 
+              document={selectedDocument || undefined} 
               onClose={handleCloseChat} 
             />
           </div>
@@ -194,7 +195,7 @@ function NavItem({ icon, label, active = false, onClick }: { icon: string; label
   );
 }
 
-function MobileDocumentList({ documents, onSelectDocument }: { documents: Document[]; onSelectDocument: (doc: Document) => void }) {
+function MobileDocumentList({ documents, onSelectDocument, onOpenCoach }: { documents: Document[]; onSelectDocument: (doc: Document) => void; onOpenCoach: () => void }) {
   const getDocIcon = (type: string) => {
     switch (type) {
       case 'Arztbrief':
@@ -253,7 +254,10 @@ function MobileDocumentList({ documents, onSelectDocument }: { documents: Docume
       </div>
 
       {/* Coach Promo Card */}
-      <div className="mt-6 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-5 text-white shadow-lg">
+      <button 
+        onClick={onOpenCoach}
+        className="w-full mt-6 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-5 text-white shadow-lg hover:shadow-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200 text-left"
+      >
         <div className="flex items-start gap-4">
           <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center flex-shrink-0">
             <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -265,7 +269,7 @@ function MobileDocumentList({ documents, onSelectDocument }: { documents: Docume
             <p className="text-blue-100 text-sm">Ihr KI-Assistent erklärt Ihnen Ihre Dokumente in einfachen Worten.</p>
           </div>
         </div>
-      </div>
+      </button>
     </div>
   );
 }
