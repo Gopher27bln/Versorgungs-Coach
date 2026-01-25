@@ -10,17 +10,17 @@ export function MessageBubble({ message }: MessageBubbleProps) {
 
   const getBubbleStyles = () => {
     if (isUser) {
-      return 'bg-blue-500 text-white ml-auto';
+      return 'bg-[#006B3F] text-white ml-auto';
     }
     if (isAdvisor) {
-      return 'bg-green-600 text-white mr-auto';
+      return 'bg-[#006B3F] text-white mr-auto';
     }
     return 'bg-gray-200 text-gray-800 mr-auto';
   };
 
   const getSenderLabel = () => {
     if (isUser) return 'Sie';
-    if (isAdvisor) return 'BARMER-Berater';
+    if (isAdvisor) return 'Kundenberater';
     return 'Versorgungs-Coach';
   };
 

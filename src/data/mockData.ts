@@ -99,5 +99,5 @@ Möchten Sie, dass ich einen bestimmten Teil genauer erkläre?`,
     'Das kann ich nachvollziehen. Medizinische Dokumente sind oft komplex. Ich bin hier, um Ihnen alles verständlich zu erklären. Was genau möchten Sie wissen?'
   ],
 
-  advisorGreeting: 'Guten Tag, hier ist Ihr BARMER-Kundenberater. Ich habe die Informationen zu Ihrem Anliegen erhalten und stehe Ihnen jetzt persönlich zur Verfügung. Wie kann ich Ihnen weiterhelfen?'
+  advisorGreeting: 'Guten Tag, hier ist Ihr Kundenberater. Ich habe die Informationen zu Ihrem Anliegen erhalten und stehe Ihnen jetzt persönlich zur Verfügung. Wie kann ich Ihnen weiterhelfen?'
 };

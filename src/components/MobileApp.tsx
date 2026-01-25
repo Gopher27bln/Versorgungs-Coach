@@ -62,9 +62,9 @@ export function MobileApp() {
   };
 
   return (
-    <div className="h-full bg-gray-50 flex flex-col">
+    <div className="h-full bg-gray-100 flex flex-col">
       {/* App Header */}
-      <header className="bg-gradient-to-r from-blue-600 to-blue-700 text-white pt-14 pb-4 px-4 shadow-lg">
+      <header className="bg-[#006B3F] text-white pt-14 pb-6 px-4">
         <div className="flex items-center gap-3">
           {currentView !== 'list' && (
             <button 
@@ -86,7 +86,7 @@ export function MobileApp() {
               <h1 className="text-lg font-bold">
                 {getHeaderTitle()}
               </h1>
-              <p className="text-xs text-blue-100">
+              <p className="text-xs text-emerald-100">
                 {getHeaderSubtitle()}
               </p>
             </div>
@@ -185,7 +185,7 @@ function NavItem({ icon, label, active = false, onClick }: { icon: string; label
   return (
     <button 
       onClick={onClick}
-      className={`flex flex-col items-center gap-1 px-3 py-1 transition-colors ${active ? 'text-blue-600' : 'text-gray-400 hover:text-gray-600'}`}
+      className={`flex flex-col items-center gap-1 px-3 py-1 transition-colors ${active ? 'text-[#006B3F]' : 'text-gray-400 hover:text-gray-600'}`}
     >
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         {icons[icon]}
@@ -200,24 +200,24 @@ function MobileDocumentList({ documents, onSelectDocument, onOpenCoach }: { docu
     switch (type) {
       case 'Arztbrief':
         return (
-          <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-            <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center border border-emerald-100">
+            <svg className="w-6 h-6 text-[#006B3F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
         );
       case 'Laborbefund':
         return (
-          <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-            <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center border border-emerald-100">
+            <svg className="w-6 h-6 text-[#006B3F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
             </svg>
           </div>
         );
       default:
         return (
-          <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-            <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center border border-emerald-100">
+            <svg className="w-6 h-6 text-[#006B3F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
@@ -237,7 +237,7 @@ function MobileDocumentList({ documents, onSelectDocument, onOpenCoach }: { docu
           <button
             key={doc.id}
             onClick={() => onSelectDocument(doc)}
-            className="w-full bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md hover:border-blue-200 transition-all duration-200 text-left"
+            className="w-full bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md hover:border-emerald-200 transition-all duration-200 text-left"
           >
             <div className="flex items-center gap-4">
               {getDocIcon(doc.type)}
@@ -256,7 +256,7 @@ function MobileDocumentList({ documents, onSelectDocument, onOpenCoach }: { docu
       {/* Coach Promo Card */}
       <button 
         onClick={onOpenCoach}
-        className="w-full mt-6 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-5 text-white shadow-lg hover:shadow-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200 text-left"
+        className="w-full mt-6 bg-[#006B3F] rounded-2xl p-5 text-white shadow-lg hover:shadow-xl hover:bg-[#005a35] transition-all duration-200 text-left"
       >
         <div className="flex items-start gap-4">
           <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center flex-shrink-0">
@@ -266,7 +266,7 @@ function MobileDocumentList({ documents, onSelectDocument, onOpenCoach }: { docu
           </div>
           <div>
             <h3 className="font-bold text-lg mb-1">Versorgungs-Coach</h3>
-            <p className="text-blue-100 text-sm">Ihr KI-Assistent erklärt Ihnen Ihre Dokumente in einfachen Worten.</p>
+            <p className="text-emerald-100 text-sm">Ihr KI-Assistent erklärt Ihnen Ihre Dokumente in einfachen Worten.</p>
           </div>
         </div>
       </button>
@@ -281,8 +281,8 @@ function MobileDocumentDetail({ document, onOpenChat }: { document: Document; on
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 border-b border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-              <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center border border-emerald-100">
+              <svg className="w-5 h-5 text-[#006B3F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
@@ -303,7 +303,7 @@ function MobileDocumentDetail({ document, onOpenChat }: { document: Document; on
       {/* Coach CTA */}
       <button
         onClick={onOpenChat}
-        className="w-full mt-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold py-4 px-6 rounded-2xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-200 flex items-center justify-center gap-3"
+        className="w-full mt-4 bg-[#006B3F] text-white font-semibold py-4 px-6 rounded-2xl shadow-lg hover:shadow-xl hover:bg-[#005a35] transition-all duration-200 flex items-center justify-center gap-3"
       >
         <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -312,23 +312,23 @@ function MobileDocumentDetail({ document, onOpenChat }: { document: Document; on
         </div>
         <div className="text-left">
           <div className="font-bold">Fragen Sie den Versorgungs-Coach</div>
-          <div className="text-sm text-blue-100">Lassen Sie sich das Dokument erklären</div>
+          <div className="text-sm text-emerald-100">Lassen Sie sich das Dokument erklären</div>
         </div>
       </button>
 
       {/* Quick Actions */}
       <div className="mt-4 grid grid-cols-2 gap-3">
-        <button className="bg-white border border-gray-200 rounded-xl p-3 flex items-center gap-3 hover:border-blue-300 transition-colors">
-          <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-            <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button className="bg-white border border-gray-200 rounded-xl p-3 flex items-center gap-3 hover:border-emerald-300 transition-colors">
+          <div className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center">
+            <svg className="w-4 h-4 text-[#006B3F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
             </svg>
           </div>
           <span className="text-sm font-medium text-gray-700">Teilen</span>
         </button>
-        <button className="bg-white border border-gray-200 rounded-xl p-3 flex items-center gap-3 hover:border-blue-300 transition-colors">
-          <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-            <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button className="bg-white border border-gray-200 rounded-xl p-3 flex items-center gap-3 hover:border-emerald-300 transition-colors">
+          <div className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center">
+            <svg className="w-4 h-4 text-[#006B3F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
             </svg>
           </div>
@@ -344,24 +344,24 @@ function DocumentsTab({ documents, onSelectDocument }: { documents: Document[]; 
     switch (type) {
       case 'Arztbrief':
         return (
-          <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-            <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center border border-emerald-100">
+            <svg className="w-5 h-5 text-[#006B3F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
         );
       case 'Laborbefund':
         return (
-          <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-            <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center border border-emerald-100">
+            <svg className="w-5 h-5 text-[#006B3F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
             </svg>
           </div>
         );
       default:
         return (
-          <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-            <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center border border-emerald-100">
+            <svg className="w-5 h-5 text-[#006B3F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
@@ -384,16 +384,16 @@ function DocumentsTab({ documents, onSelectDocument }: { documents: Document[]; 
           <input 
             type="text" 
             placeholder="Dokumente durchsuchen..." 
-            className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
           />
         </div>
       </div>
 
       <div className="flex gap-2 mb-4 overflow-x-auto pb-2">
-        <button className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-full whitespace-nowrap">Alle</button>
-        <button className="px-4 py-2 bg-white border border-gray-200 text-gray-600 text-sm font-medium rounded-full whitespace-nowrap hover:border-blue-300">Arztbriefe</button>
-        <button className="px-4 py-2 bg-white border border-gray-200 text-gray-600 text-sm font-medium rounded-full whitespace-nowrap hover:border-blue-300">Laborbefunde</button>
-        <button className="px-4 py-2 bg-white border border-gray-200 text-gray-600 text-sm font-medium rounded-full whitespace-nowrap hover:border-blue-300">Rezepte</button>
+        <button className="px-4 py-2 bg-[#006B3F] text-white text-sm font-medium rounded-full whitespace-nowrap">Alle</button>
+        <button className="px-4 py-2 bg-white border border-gray-200 text-gray-600 text-sm font-medium rounded-full whitespace-nowrap hover:border-emerald-300">Arztbriefe</button>
+        <button className="px-4 py-2 bg-white border border-gray-200 text-gray-600 text-sm font-medium rounded-full whitespace-nowrap hover:border-emerald-300">Laborbefunde</button>
+        <button className="px-4 py-2 bg-white border border-gray-200 text-gray-600 text-sm font-medium rounded-full whitespace-nowrap hover:border-emerald-300">Rezepte</button>
       </div>
 
       <div className="space-y-2">
@@ -401,7 +401,7 @@ function DocumentsTab({ documents, onSelectDocument }: { documents: Document[]; 
           <button
             key={doc.id}
             onClick={() => onSelectDocument(doc)}
-            className="w-full bg-white rounded-xl p-3 shadow-sm border border-gray-100 hover:shadow-md hover:border-blue-200 transition-all duration-200 text-left flex items-center gap-3"
+            className="w-full bg-white rounded-xl p-3 shadow-sm border border-gray-100 hover:shadow-md hover:border-emerald-200 transition-all duration-200 text-left flex items-center gap-3"
           >
             {getDocIcon(doc.type)}
             <div className="flex-1 min-w-0">
@@ -432,7 +432,7 @@ function AppointmentsTab() {
         <p className="text-sm text-gray-500">Kommende Arzttermine</p>
       </div>
 
-      <button className="w-full mb-4 py-3 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 font-medium flex items-center justify-center gap-2 hover:border-blue-400 hover:text-blue-600 transition-colors">
+      <button className="w-full mb-4 py-3 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 font-medium flex items-center justify-center gap-2 hover:border-emerald-400 hover:text-[#006B3F] transition-colors">
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
         </svg>
@@ -443,9 +443,9 @@ function AppointmentsTab() {
         {appointments.map((apt) => (
           <div key={apt.id} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
             <div className="flex items-start gap-3">
-              <div className="w-12 h-12 bg-blue-100 rounded-xl flex flex-col items-center justify-center">
-                <span className="text-xs font-bold text-blue-600">{apt.date.split('.')[0]}</span>
-                <span className="text-xs text-blue-500">{apt.date.split('.')[1]}</span>
+              <div className="w-12 h-12 bg-emerald-50 rounded-xl flex flex-col items-center justify-center border border-emerald-100">
+                <span className="text-xs font-bold text-[#006B3F]">{apt.date.split('.')[0]}</span>
+                <span className="text-xs text-emerald-600">{apt.date.split('.')[1]}</span>
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-800">{apt.doctor}</h3>
@@ -484,13 +484,13 @@ function ProfileTab() {
 
       <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-4">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
+          <div className="w-16 h-16 bg-[#006B3F] rounded-full flex items-center justify-center text-white text-xl font-bold">
             MK
           </div>
           <div>
             <h3 className="font-bold text-gray-800 text-lg">Max Krause</h3>
             <p className="text-sm text-gray-500">Versichertennummer: A123456789</p>
-            <p className="text-sm text-gray-500">BARMER</p>
+            <p className="text-sm text-gray-500">Gesetzliche Krankenversicherung</p>
           </div>
         </div>
       </div>
@@ -505,8 +505,8 @@ function ProfileTab() {
       </div>
 
       <div className="mt-6 text-center text-xs text-gray-400">
-        <p>TI-M ePA App v1.0.0</p>
-        <p>© 2026 BARMER</p>
+        <p>ePA App v1.0.0</p>
+        <p>© 2026 Ihre Krankenkasse</p>
       </div>
     </div>
   );
@@ -524,8 +524,8 @@ function SettingsItem({ icon, label, isLast = false }: { icon: string; label: st
 
   return (
     <button className={`w-full flex items-center gap-3 p-4 hover:bg-gray-50 transition-colors ${!isLast ? 'border-b border-gray-100' : ''}`}>
-      <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-        <svg className={`w-4 h-4 ${icon === 'logout' ? 'text-red-500' : 'text-gray-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center">
+        <svg className={`w-4 h-4 ${icon === 'logout' ? 'text-red-500' : 'text-[#006B3F]'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           {icons[icon]}
         </svg>
       </div>

@@ -147,8 +147,8 @@ export function CoachChat({ document }: CoachChatProps) {
     <div className="flex flex-col h-full bg-gray-50">
       {/* Status indicator */}
       {isEscalated && (
-        <div className="bg-green-600 text-white text-center py-2 text-sm font-medium">
-          Verbunden mit BARMER-Kundenberater
+        <div className="bg-[#006B3F] text-white text-center py-2 text-sm font-medium">
+          Verbunden mit Kundenberater
         </div>
       )}
 
@@ -225,13 +225,13 @@ export function CoachChat({ document }: CoachChatProps) {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
             placeholder="Ihre Nachricht..."
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
             disabled={isTyping}
           />
           <button
             onClick={handleSendMessage}
             disabled={!inputValue.trim() || isTyping}
-            className="px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            className="px-4 py-2 bg-[#006B3F] text-white rounded-full hover:bg-[#005a35] disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
