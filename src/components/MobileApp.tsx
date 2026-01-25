@@ -123,7 +123,8 @@ export function MobileApp() {
         {currentView === 'chat' && (
           <div className="h-full">
             <CoachChat 
-              document={selectedDocument || undefined} 
+              document={selectedDocument || undefined}
+              allDocuments={mockDocuments}
               onClose={handleCloseChat} 
             />
           </div>

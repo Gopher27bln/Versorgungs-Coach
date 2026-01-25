@@ -45,6 +45,11 @@ interface ChatRequest {
     date: string;
     content: string;
   };
+  allDocumentsContext?: Array<{
+    title: string;
+    date: string;
+    content: string;
+  }>;
   conversationHistory?: Array<{
     role: 'user' | 'assistant';
     content: string;
@@ -82,7 +87,7 @@ const handler: Handler = async (event) => {
       apiKey: apiKey,
     });
 
-    const { message, mode = 'coach', documentContext, conversationHistory = [] }: ChatRequest = JSON.parse(event.body || '{}');
+    const { message, mode = 'coach', documentContext, allDocumentsContext, conversationHistory = [] }: ChatRequest = JSON.parse(event.body || '{}');
 
     if (!message) {
       return {
@@ -101,6 +106,14 @@ Inhalt:
 ${documentContext.content}
 
 Beziehe dich in deinen Antworten auf dieses Dokument, wenn es relevant ist.`;
+    }
+
+    if (allDocumentsContext && allDocumentsContext.length > 0) {
+      systemPrompt += `\n\nDu hast Zugriff auf alle ${allDocumentsContext.length} Dokumente in der elektronischen Patientenakte des Nutzers. Hier sind die Dokumente:\n`;
+      allDocumentsContext.forEach((doc, index) => {
+        systemPrompt += `\n--- Dokument ${index + 1}: ${doc.title} (${doc.date}) ---\n${doc.content}\n`;
+      });
+      systemPrompt += `\nDu kannst dem Nutzer Fragen zu allen diesen Dokumenten beantworten, Laborwerte erklären, Zusammenhänge aufzeigen und medizinische Begriffe in einfacher Sprache erläutern.`;
     }
 
     const messages: Array<{ role: 'user' | 'assistant'; content: string }> = [

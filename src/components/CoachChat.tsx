@@ -5,6 +5,7 @@ import { MessageBubble } from './MessageBubble';
 
 interface CoachChatProps {
   document?: Document;
+  allDocuments?: Document[];
   onClose?: () => void;
 }
 
@@ -19,6 +20,7 @@ function getCurrentTime(): string {
 async function fetchClaudeResponse(
   message: string,
   documentContext: { title: string; date: string; content: string } | undefined,
+  allDocumentsContext: Array<{ title: string; date: string; content: string }> | undefined,
   conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }>,
   mode: 'coach' | 'advisor' = 'coach'
 ): Promise<string> {
@@ -32,6 +34,7 @@ async function fetchClaudeResponse(
         message,
         mode,
         documentContext,
+        allDocumentsContext,
         conversationHistory,
       }),
     });
@@ -48,7 +51,7 @@ async function fetchClaudeResponse(
   }
 }
 
-export function CoachChat({ document }: CoachChatProps) {
+export function CoachChat({ document, allDocuments }: CoachChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -70,7 +73,9 @@ export function CoachChat({ document }: CoachChatProps) {
       sender: 'coach',
       text: document 
         ? coachResponses.greeting(document.title, document.date)
-        : 'Hallo! Ich bin Ihr Versorgungs-Coach. Wie kann ich Ihnen heute helfen? Sie können mir Fragen zu Ihrer Gesundheit, Ihren Dokumenten oder Ihrer Versorgung stellen.',
+        : allDocuments && allDocuments.length > 0
+          ? `Hallo! Ich bin Ihr Versorgungs-Coach. Ich habe Zugriff auf ${allDocuments.length} Dokumente in Ihrer ePA und kann Ihnen diese erklären. Fragen Sie mich gerne zu Ihren Befunden, Laborwerten oder anderen Dokumenten!`
+          : 'Hallo! Ich bin Ihr Versorgungs-Coach. Wie kann ich Ihnen heute helfen? Sie können mir Fragen zu Ihrer Gesundheit, Ihren Dokumenten oder Ihrer Versorgung stellen.',
       timestamp: getCurrentTime(),
     };
     setMessages([greetingMessage]);
@@ -101,6 +106,12 @@ export function CoachChat({ document }: CoachChatProps) {
         content: m.text,
       }));
 
+    const allDocsContext = allDocuments?.map(doc => ({
+      title: doc.title,
+      date: doc.date,
+      content: doc.content,
+    }));
+
     const responseText = await fetchClaudeResponse(
       userMessageText,
       document ? {
@@ -108,6 +119,7 @@ export function CoachChat({ document }: CoachChatProps) {
         date: document.date,
         content: document.content,
       } : undefined,
+      allDocsContext,
       conversationHistory,
       currentMode
     );
